@@ -5,19 +5,17 @@ import java.awt.Graphics2D;
 public class Tile {
 
 	private int value;
-	private int width;
-	private int height;
 	private Color color;
 
 	public int row;
 	public int col;
+	
+	public final int MARGIN = 5;
+	public final int SIZE = 64;
 
 	public Tile(int v, int r, int c) {
-		this.width = 64;
-		this.height = 64;
 		this.row = r;
 		this.col = c;
-		
 		this.value = v;
 	}
 
@@ -27,14 +25,6 @@ public class Tile {
 
 	public int getValue(int x) {
 		return this.value;
-	}
-
-	public int getHeight() {
-		return this.height;
-	}
-
-	public int getWidth() {
-		return this.width;
 	}
 
 	// return tile color based on value
@@ -69,12 +59,20 @@ public class Tile {
 	}
 
 	public void drawTile(Graphics2D g) {
-		g.setColor(getColor());
-		g.fillRoundRect(this.col + 5, this.row + 5, this.width, this.height, 15, 15);
 		
+		g.setColor(this.getColor());
+		
+		g.fillRoundRect(this.MARGIN + (this.col * (this.SIZE + this.MARGIN)), this.MARGIN + (this.row * (this.SIZE + this.MARGIN)), this.SIZE, this.SIZE, 10, 10);
+	
+
 		g.setColor(Color.DARK_GRAY);
 		g.setFont(new Font("SansSerif", Font.BOLD, 32));
-		g.drawString(Integer.toString(this.value), this.col + (this.width/2 - 5), this.row + (this.height/2 + 15));
+
+		// only draw value if tile is not empty
+		if (this.value != 0) {
+			g.drawString(Integer.toString(this.value), this.MARGIN + (this.col * (this.SIZE + this.MARGIN)) + (this.SIZE / 2 - 10),
+					this.MARGIN + (this.row * (this.SIZE + this.MARGIN)) + (this.SIZE / 2 + 10));
+		}
 	}
 
 }
