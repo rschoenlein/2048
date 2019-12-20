@@ -26,7 +26,6 @@ public class Main extends JFrame implements KeyListener, ActionListener{
 	}
 	
 	
-	
 	public static void main(String[] args) {
 		new Main();
 	}
@@ -40,10 +39,27 @@ public class Main extends JFrame implements KeyListener, ActionListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		this.drawPane.getBoard().moveRight();
-		System.out.println("key pressed");
-		repaint();
+		if(e.getKeyCode() == e.VK_RIGHT) {
+			this.drawPane.getBoard().moveRight();
+			repaint();
+		}
 		
+		if(e.getKeyCode() == e.VK_LEFT) {
+			this.drawPane.getBoard().moveLeft();
+			repaint();
+		}
+		
+		if(e.getKeyCode() == e.VK_UP) {
+			this.drawPane.getBoard().moveUp();
+			repaint();
+		}
+		
+		if(e.getKeyCode() == e.VK_DOWN) {
+			this.drawPane.getBoard().moveDown();
+			repaint();
+		}
+		
+		this.drawPane.getBoard().generateTile();
 	}
 
 	@Override
