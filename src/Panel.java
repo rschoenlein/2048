@@ -10,13 +10,12 @@ public class Panel extends JPanel {
 	private Board board;
 
 	public Panel() {
-		board = new Board(4, 4);
+		board = new Board(4);
 		setLayout(new GridLayout());
 	}
 	
 	 @Override
      public void paintComponent(Graphics g){
-		 System.out.println(board.getTiles()[0][0].row);
          super.paintComponent(g);
          Graphics2D g2 = (Graphics2D)g;
          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
