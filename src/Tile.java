@@ -1,29 +1,36 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 public class Tile {
 
 	private int value;
 	private Color color;
+	private Rectangle rect;
 
 	public int row;
 	public int col;
 	
 	public final int MARGIN = 5;
 	public final int SIZE = 64;
+	
 
 	public Tile(int v, int r, int c) {
 		this.row = r;
 		this.col = c;
 		this.value = v;
+		
+		//create rectangle at proper x and y coordinates based on margin, row, col, and SIZE
+		this.rect = new Rectangle(this.MARGIN + (this.col * (this.SIZE + this.MARGIN)), this.MARGIN + (this.row * (this.SIZE + this.MARGIN)), this.SIZE, this.SIZE);
 	}
 
 	public void setValue(int v) {
 		this.value = v;
 	}
 
-	public int getValue(int x) {
+	public int getValue() {
 		return this.value;
 	}
 
@@ -62,16 +69,22 @@ public class Tile {
 		
 		g.setColor(this.getColor());
 		
-		g.fillRoundRect(this.MARGIN + (this.col * (this.SIZE + this.MARGIN)), this.MARGIN + (this.row * (this.SIZE + this.MARGIN)), this.SIZE, this.SIZE, 10, 10);
+		g.fillRoundRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height, 10, 10);
 	
 
-		g.setColor(Color.DARK_GRAY);
-		g.setFont(new Font("SansSerif", Font.BOLD, 32));
-
-		// only draw value if tile is not empty
+	
 		if (this.value != 0) {
-			g.drawString(Integer.toString(this.value), this.MARGIN + (this.col * (this.SIZE + this.MARGIN)) + (this.SIZE / 2 - 10),
-					this.MARGIN + (this.row * (this.SIZE + this.MARGIN)) + (this.SIZE / 2 + 10));
+			g.setColor(Color.DARK_GRAY);
+			
+			Font tileFont = new Font("SansSerif", Font.BOLD, 32);
+			g.setFont(tileFont);
+			
+			//center value in rect
+			FontMetrics metrics = g.getFontMetrics(tileFont);
+			int x = this.rect.x + (this.rect.width - metrics.stringWidth(Integer.toString(this.value))) / 2;
+			int y = this.rect.y + ((this.rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+			
+			g.drawString(Integer.toString(this.value), x, y);
 		}
 	}
 
