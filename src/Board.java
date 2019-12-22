@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+//TODO winning and game over conditions
 public class Board {
 
 	private Tile[][] tiles;

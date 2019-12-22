@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-//TODO draw in this class
+//TODO create class for UI
 public class Main extends JFrame implements KeyListener, ActionListener{
 	
 	private Panel drawPane;
