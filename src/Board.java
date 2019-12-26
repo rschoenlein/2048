@@ -68,7 +68,6 @@ public class Board {
 
 			int randValue = Math.random() > .5 ? 2 : 4;
 
-			System.out.println(randRow + " " + randCol);
 			this.tiles[randRow][randCol] = new Tile(randValue, randRow, randCol);
 		}
 	}
@@ -89,107 +88,138 @@ public class Board {
 		}
 	}
 
-	// TODO fix movement with populated board
-
 	// go through each row in tiles right to left, find non-empty tiles and move
 	// them right by 1
-	public void moveRightByOne() {
+	public void moveRight() {
 		for (int r = 0; r < tiles.length; r++) {
 			for (int c = tiles[0].length - 1; c >= 0; c--) {
-				if (c < tiles[0].length - 1) {
-					if (tiles[r][c].getValue() > 0) {
-						if (tiles[r][c + 1].getValue() == 0) {
-							tiles[r][c + 1] = new Tile(tiles[r][c].getValue(), r, c + 1);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-						if (tiles[r][c + 1].getValue() == tiles[r][c].getValue()) {
-							tiles[r][c + 1] = new Tile(tiles[r][c].getValue() * 2, r, c + 1);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-					}
+				if (tiles[r][c].getValue() > 0) {
+					moveTileRight(r, c);
 				}
 			}
 		}
 	}
 
-	public void moveRight() {
-		for (int i = 0; i < this.size; i++) {
-			this.moveRightByOne();
-		}
-	}
+	public void moveTileRight(int r, int c) {
 
-	public void moveLeftByOne() {
-		for (int r = 0; r < tiles.length; r++) {
-			for (int c = 0; c < tiles[0].length; c++) {
-				if (c > 0) {
-					if (tiles[r][c].getValue() > 0) {
-						if (tiles[r][c - 1].getValue() == 0) {
-							tiles[r][c - 1] = new Tile(tiles[r][c].getValue(), r, c - 1);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-						if (tiles[r][c - 1].getValue() == tiles[r][c].getValue()) {
-							tiles[r][c - 1] = new Tile(tiles[r][c].getValue() * 2, r, c - 1);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-					}
-				}
-			}
+		if (c == tiles[0].length - 1) {
+			return;
 		}
+
+		if (tiles[r][c + 1].getValue() != tiles[r][c].getValue() && tiles[r][c + 1].getValue() != 0) {
+			return;
+		}
+
+		if (tiles[r][c + 1].getValue() == tiles[r][c].getValue()) {
+			tiles[r][c + 1] = new Tile(tiles[r][c].getValue() * 2, r, c + 1);
+			tiles[r][c] = new Tile(0, r, c);
+			return;
+		}
+
+		if (tiles[r][c + 1].getValue() == 0) {
+			tiles[r][c + 1] = new Tile(tiles[r][c].getValue(), r, c + 1);
+			tiles[r][c] = new Tile(0, r, c);
+		}
+
+		moveTileRight(r, c + 1);
 	}
 
 	public void moveLeft() {
-		for (int i = 0; i < this.size; i++) {
-			this.moveLeftByOne();
-		}
-	}
-
-	public void moveUpByOne() {
-		for (int r = tiles.length - 1; r >= 0; r--) {
+		for (int r = 0; r < tiles.length; r++) {
 			for (int c = 0; c < tiles[0].length; c++) {
-				if (r > 0) {
-					if (tiles[r][c].getValue() > 0) {
-						if (tiles[r - 1][c].getValue() == 0) {
-							tiles[r - 1][c] = new Tile(tiles[r][c].getValue(), r - 1, c);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-						if (tiles[r - 1][c].getValue() == tiles[r][c].getValue()) {
-							tiles[r - 1][c] = new Tile(tiles[r][c].getValue() * 2, r - 1, c);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-					}
+				if (tiles[r][c].getValue() > 0) {
+					moveTileLeft(r, c);
 				}
 			}
 		}
+	}
+
+	public void moveTileLeft(int r, int c) {
+		if (c == 0) {
+			return;
+		}
+
+		if (tiles[r][c - 1].getValue() != tiles[r][c].getValue() && tiles[r][c - 1].getValue() != 0) {
+			return;
+		}
+
+		if (tiles[r][c - 1].getValue() == tiles[r][c].getValue()) {
+			tiles[r][c - 1] = new Tile(tiles[r][c].getValue() * 2, r, c - 1);
+			tiles[r][c] = new Tile(0, r, c);
+			return;
+		}
+
+		if (tiles[r][c - 1].getValue() == 0) {
+			tiles[r][c - 1] = new Tile(tiles[r][c].getValue(), r, c - 1);
+			tiles[r][c] = new Tile(0, r, c);
+		}
+
+		moveTileLeft(r, c - 1);
 	}
 
 	public void moveUp() {
-		for (int i = 0; i < this.size; i++) {
-			this.moveUpByOne();
-		}
-	}
-
-	public void moveDownByOne() {
 		for (int r = 0; r < tiles.length; r++) {
 			for (int c = 0; c < tiles[0].length; c++) {
-				if (r < tiles.length - 1) {
-					if (tiles[r][c].getValue() > 0) {
-						if (tiles[r + 1][c].getValue() == 0) {
-							tiles[r + 1][c] = new Tile(tiles[r][c].getValue(), r + 1, c);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-						if (tiles[r + 1][c].getValue() == tiles[r][c].getValue()) {
-							tiles[r + 1][c] = new Tile(tiles[r][c].getValue() * 2, r + 1, c);
-							tiles[r][c] = new Tile(0, r, c);
-						}
-					}
+				if (tiles[r][c].getValue() > 0) {
+					moveTileUp(r, c);
 				}
 			}
 		}
 	}
 
-	public void moveDown() {
-		for (int i = 0; i < this.size; i++) {
-			this.moveDownByOne();
+	public void moveTileUp(int r, int c) {
+		if (r == 0) {
+			return;
 		}
+
+		if (tiles[r - 1][c].getValue() != tiles[r][c].getValue() && tiles[r - 1][c].getValue() != 0) {
+			return;
+		}
+
+		if (tiles[r - 1][c].getValue() == tiles[r][c].getValue()) {
+			tiles[r - 1][c] = new Tile(tiles[r][c].getValue() * 2, r - 1, c);
+			tiles[r][c] = new Tile(0, r, c);
+			return;
+		}
+
+		if (tiles[r - 1][c].getValue() == 0) {
+			tiles[r - 1][c] = new Tile(tiles[r][c].getValue(), r - 1, c);
+			tiles[r][c] = new Tile(0, r, c);
+		}
+
+		moveTileUp(r - 1, c);
+	}
+
+	public void moveDown() {
+		for (int r = tiles.length - 1; r >= 0; r--) {
+			for (int c = 0; c < tiles[0].length; c++) {
+				if (tiles[r][c].getValue() > 0) {
+					moveTileDown(r, c);
+				}
+			}
+		}
+	}
+
+	public void moveTileDown(int r, int c) {
+		if (r == tiles.length - 1) {
+			return;
+		}
+
+		if (tiles[r + 1][c].getValue() != tiles[r][c].getValue() && tiles[r + 1][c].getValue() != 0) {
+			return;
+		}
+
+		if (tiles[r + 1][c].getValue() == tiles[r][c].getValue()) {
+			tiles[r + 1][c] = new Tile(tiles[r][c].getValue() * 2, r + 1, c);
+			tiles[r][c] = new Tile(0, r, c);
+			return;
+		}
+
+		if (tiles[r + 1][c].getValue() == 0) {
+			tiles[r + 1][c] = new Tile(tiles[r][c].getValue(), r + 1, c);
+			tiles[r][c] = new Tile(0, r, c);
+		}
+
+		moveTileDown(r + 1, c);
 	}
 }
